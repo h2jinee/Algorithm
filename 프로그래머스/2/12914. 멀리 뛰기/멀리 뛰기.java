@@ -1,23 +1,17 @@
 class Solution {
     public long solution(int n) {
-        // n이 1일 경우 배열 크기 오류를 방지하기 위한 예외 처리
-        if (n == 1) return 1;
-
-        // 1. 결과 값을 저장할 테이블(배열) 생성
-        // n번째 인덱스까지 써야 하므로 크기는 n + 1
-        long[] dp = new long[n + 1];
-
-        // 2. 초기값 설정
-        dp[1] = 1; // 1칸 가는 방법: (1)
-        dp[2] = 2; // 2칸 가는 방법: (1,1), (2)
-
-        // 3. 점화식을 이용한 반복문
-        // 3번째 칸부터는 (전 칸에서 1칸 뛰기) + (전전 칸에서 2칸 뛰기)의 합
+        if (n <= 2) return n;
+        
+        long prev2 = 1;
+        long prev1 = 2;
+        long current = 0;
+        
         for (int i = 3; i <= n; i++) {
-            // 계산할 때마다 나머지를 구해주어야 오버플로우 방지
-            dp[i] = (dp[i - 1] + dp[i - 2]) % 1234567;
+            current = (prev1 + prev2) % 1234567;
+            prev2 = prev1;
+            prev1 = current;
         }
-
-        return dp[n];
+        
+        return current;
     }
 }
