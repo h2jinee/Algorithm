@@ -2,19 +2,15 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int n, long left, long right) {
-        int[] answer = new int[(int)(right - left) + 1];
-
-        for (int i = 0; i < answer.length; i++) {
-            long x = (i + left) % n;
-            long y = (i + left) / n;
-            
-            if (x > y) {
-                answer[i] = (int)x + 1;
-            } else {
-                answer[i] = (int)y + 1;
-            }
-        }
+        int[] answer = new int[(int) (right - left + 1)];
+        int idx = 0;
         
+        for (long i = left; i <= right; i++) {
+            long row = i / n;
+            long col = i % n;
+            
+            answer[idx++] = (int) Math.max(row, col) + 1;
+        }
         return answer;
     }
 }
