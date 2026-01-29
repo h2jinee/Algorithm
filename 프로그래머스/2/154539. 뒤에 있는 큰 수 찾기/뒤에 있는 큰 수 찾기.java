@@ -3,31 +3,26 @@ import java.util.Arrays;
 
 class Solution {
     public int[] solution(int[] numbers) {
-        // 1. 정답 배열을 numbers의 길이로 생성하고, 모두 -1로 초기화
-        int[] answer = new int[numbers.length];
+        int n = numbers.length;
+        int[] answer = new int[n];
+        
+        // 1. 모든 결과값을 -1로 초기화 (뒷 큰수를 못 찾으면 그대로 -1)
         Arrays.fill(answer, -1);
-
-        // 2. '아직 뒷 큰수를 찾지 못한' 원소의 인덱스를 담을 스택 생성
+        
+        // 2. 인덱스를 담을 스택 (대기실) 생성
         Stack<Integer> stack = new Stack<>();
-
-        // 3. numbers 배열을 0번부터 끝까지 순회 (i = 현재 인덱스)
-        for (int i = 0; i < numbers.length; i++) {
-            
-            // 4. 스택이 비어있지 않고, 스택의 top(peek)에 있는 인덱스(j)의 값(numbers[j])이 현재 값(numbers[i])보다 작다면
+        
+        for (int i = 0; i < n; i++) {
+            // 3. 대기실에 사람이 있고, 현재 숫자(numbers[i])가 대기실의 숫자보다 크다면?
             while (!stack.isEmpty() && numbers[stack.peek()] < numbers[i]) {
-                // -> 현재 값(numbers[i])이 스택 top에 있던 원소(j)의 '뒷 큰수'가 됨
-                
-                // 스택에서 j를 꺼내서(pop)
-                int index = stack.pop();
-                // answer[j]에 현재 값(numbers[i])을 저장
-                answer[index] = numbers[i];
+                // 대기실에 있던 숫자의 뒷 큰수를 현재 숫자로 확정하고 퇴장시킨다.
+                answer[stack.pop()] = numbers[i];
             }
-
-            // 5. 현재 인덱스(i)를 스택에 push
+            
+            // 4. 현재 숫자의 인덱스를 대기실에 넣는다.
             stack.push(i);
         }
-
-        // 6. 배열 순회가 끝나면 answer를 반환
+        
         return answer;
     }
 }
